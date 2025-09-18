@@ -1,0 +1,21 @@
+# Core Django and web framework
+Django==4.2.7
+djangorestframework==3.14.0
+
+# Database
+psycopg2-binary==2.9.7  # PostgreSQL adapter
+
+# Environment and configuration
+python-decouple==3.8    # Environment variable management
+
+# CORS handling for API
+django-cors-headers==4.3.1
+
+# API filtering and pagination
+django-filter==23.3
+
+# Image processing for file uploads
+Pillow==10.0.1
+
+# Static file serving in production
+whitenoise==6.6.0

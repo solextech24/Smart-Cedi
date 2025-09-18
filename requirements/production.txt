@@ -1,0 +1,11 @@
+# Include base requirements
+-r base.txt
+
+# Production server
+gunicorn==21.2.0
+
+# Monitoring and error tracking
+sentry-sdk[django]==1.38.0
+
+# Security
+cryptography==41.0.7
