@@ -1,4 +1,4 @@
-# � Smart Penny – AI-Powered Personal Finance Tracker
+# 💰 Smart Cedi – AI-Powered Personal Finance Tracker
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/python-v3.9+-blue.svg)](https://www.python.org/downloads/)
@@ -8,11 +8,11 @@
 
 ### 🔖 Project Title & Description
 
-**Smart Penny** is an intelligent personal finance tracker that empowers individuals to take control of their financial future. Beyond traditional expense tracking, Smart Penny leverages AI to provide personalized investment recommendations, smart savings plans, and predictive financial insights.
+**Smart Cedi** is an intelligent personal finance tracker that empowers individuals to take control of their financial future. Beyond traditional expense tracking, Smart Cedi leverages AI to provide personalized investment recommendations, smart savings plans, and predictive financial insights.
 
 **Target Audience:** Young professionals, students, and anyone looking to improve their financial literacy and make data-driven financial decisions.
 
-**Why It Matters:** Financial literacy is crucial for long-term wealth building, yet many people struggle with budgeting and investment decisions. Smart Penny democratizes financial planning by making AI-powered insights accessible to everyone, regardless of their financial background or experience level.
+**Why It Matters:** Financial literacy is crucial for long-term wealth building, yet many people struggle with budgeting and investment decisions. Smart Cedi democratizes financial planning by making AI-powered insights accessible to everyone, regardless of their financial background or experience level.
 
 ### ✨ Key Features
 
@@ -129,7 +129,7 @@
    python manage.py runserver
    ```
 
-Visit `http://localhost:8000` to access Smart Penny!
+Visit `http://localhost:8000` to access Smart Cedi!
 
 ---
 
@@ -421,11 +421,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- Thanks to all contributors who help make Smart Penny better
+- Thanks to all contributors who help make Smart Cedi better
 - OpenAI for providing AI capabilities
 - Django community for the amazing framework
 - All users who provide feedback and suggestions
 
 ---
 
-**Made with ❤️ by the Smart Penny Team**
+**Made with ❤️ by the Smart Cedi Team**
