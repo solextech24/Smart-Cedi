@@ -75,10 +75,7 @@ npm-debug.log*
 # Temporary files
 *.tmp
 *.temp
-.github/instructions/project_flow.instructions.md
-.github/instructions/project_flow.instructions.md
 requirements/development-local.txt
 .vscode-upload.json
 REFLECTION.md
-.github/instructions/project_flow.instructions.md
 .github/instructions/project_flow.instructions.md

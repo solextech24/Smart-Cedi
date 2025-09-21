@@ -12,10 +12,13 @@
 3. Implement with educational explanations
 4. Ask for commit after each logical section
 
-## Git Workflow
+## Git Workflow & AI Role
 - Granular commits by logical sections
 - Short, precise commit messages
 - Use conventional commits: feat/fix/docs/config/chore
+- create feature branches for each task
+- **AI Role**: Push feature branches for review only - NO merging
+- **Review Authority**: Human developer reviews and merges via GitHub
 - Ask before committing after each feature/patch
 
 ## Django Standards
@@ -37,6 +40,9 @@
 
 ### Git Workflow & Commit Management
 
+- **AI Workflow Boundaries**: AI creates feature branches and pushes for review. Human developer has full authority over merging decisions via GitHub pull requests
+- **No AI Merging**: AI never merges branches - only commits to feature branches and pushes for review
+- **Review Process**: All merges happen through GitHub after human code review and approval
 - **Commit After Features**: After completing any feature implementation or significant patch, ask user if they want to generate commit messages and make commits
 - **Focused Commits**: Keep commits focused on single features or logical changes
 - **Conventional Commits**: Use conventional commit format when generating commit messages:
