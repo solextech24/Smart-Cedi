@@ -44,9 +44,9 @@ THIRD_PARTY_APPS = [
 # Our custom apps - we'll create these step by step
 LOCAL_APPS = [
     'apps.accounts',           # User management and profiles
+    'apps.transactions',       # Financial transactions and categories
+    'apps.budgets',           # Budget management and alerts
     # We'll add these as we create them:
-    # 'apps.transactions', 
-    # 'apps.budgets',
     # 'apps.ai_insights',
 ]
 
