@@ -1,6 +1,42 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django.utils.html import escape
+import re
 from .models import Category, Transaction
+
+
+def sanitize_color(color_value):
+    """
+    Sanitize color value to prevent XSS and ensure safe CSS color format
+    Returns a safe color value or fallback if validation fails
+    """
+    if not color_value:
+        return '#000000'  # Fallback for empty/None values
+    
+    # Normalize the input
+    normalized_color = str(color_value).strip().lower()
+    
+    # Define safe hex color patterns
+    hex_6_pattern = r'^#[0-9a-f]{6}$'  # #RRGGBB
+    hex_3_pattern = r'^#[0-9a-f]{3}$'  # #RGB
+    
+    # Define allowlist of safe CSS color names
+    safe_css_colors = {
+        'black', 'white', 'red', 'green', 'blue', 'yellow', 'cyan', 'magenta',
+        'orange', 'purple', 'pink', 'brown', 'gray', 'grey', 'lime', 'navy',
+        'olive', 'silver', 'teal', 'aqua', 'maroon', 'fuchsia'
+    }
+    
+    # Validate against hex patterns
+    if re.match(hex_6_pattern, normalized_color) or re.match(hex_3_pattern, normalized_color):
+        return normalized_color
+    
+    # Validate against safe CSS color names
+    if normalized_color in safe_css_colors:
+        return normalized_color
+    
+    # If validation fails, return safe fallback
+    return '#000000'
 
 
 @admin.register(Category)
@@ -32,10 +68,14 @@ class CategoryAdmin(admin.ModelAdmin):
     )
     
     def color_preview(self, obj):
-        """Display color as a colored box"""
+        """Display color as a colored box with XSS protection"""
+        # Sanitize the color value to prevent XSS
+        safe_color = sanitize_color(obj.color)
+        
         return format_html(
-            '<div style="width: 20px; height: 20px; background-color: {}; border: 1px solid #ccc;"></div>',
-            obj.color
+            '<div style="width: 20px; height: 20px; background-color: {}; border: 1px solid #ccc;" title="{}"></div>',
+            safe_color,
+            escape(obj.color)  # Show original value in tooltip, properly escaped
         )
     color_preview.short_description = 'Color'
     
