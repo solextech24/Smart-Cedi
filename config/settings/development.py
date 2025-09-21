@@ -24,7 +24,7 @@ DATABASES = {
 
 # Development-specific apps
 DEV_APPS = [
-    'django_extensions',  # Provides useful management commands
+    # 'django_extensions',  # Will add this later when needed
 ]
 
 # Add development apps to installed apps

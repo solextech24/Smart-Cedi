@@ -43,8 +43,8 @@ THIRD_PARTY_APPS = [
 
 # Our custom apps - we'll create these step by step
 LOCAL_APPS = [
+    'apps.accounts',           # User management and profiles
     # We'll add these as we create them:
-    # 'apps.accounts',
     # 'apps.transactions', 
     # 'apps.budgets',
     # 'apps.ai_insights',
@@ -148,6 +148,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
     "http://127.0.0.1:3000",
 ]
+
+# Authentication settings
+AUTH_USER_MODEL = 'accounts.User'  # Use our custom User model
 
 # Logging configuration
 LOGGING = {
