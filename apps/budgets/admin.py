@@ -60,15 +60,18 @@ class BudgetAdmin(admin.ModelAdmin):
     
     def progress_bar(self, obj):
         """Display budget progress as a progress bar"""
-        percentage = min(obj.percentage_used, 100)
-        color = 'red' if percentage > 100 else 'orange' if percentage > obj.alert_percentage else 'green'
+        # Use original percentage for color decision (not capped)
+        color = 'red' if obj.percentage_used > 100 else 'orange' if obj.percentage_used > obj.alert_percentage else 'green'
+        
+        # Cap percentage for display width and label
+        display_percentage = min(obj.percentage_used, 100)
         
         return format_html(
             '<div style="width: 100px; background-color: #f0f0f0; border-radius: 3px;">'
             '<div style="width: {}%; background-color: {}; height: 20px; border-radius: 3px; text-align: center; color: white; font-size: 12px; line-height: 20px;">'
             '{:.1f}%'
             '</div></div>',
-            percentage, color, percentage
+            display_percentage, color, obj.percentage_used  # Show actual percentage in label
         )
     progress_bar.short_description = 'Progress'
     

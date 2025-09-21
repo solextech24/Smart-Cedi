@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
 from decimal import Decimal
 import re
@@ -47,7 +47,12 @@ class Category(models.Model):
     color = models.CharField(
         max_length=7,
         default='#007bff',
-        validators=[validate_hex_color],
+        validators=[
+            RegexValidator(
+                regex=r'^#[0-9A-Fa-f]{6}$',
+                message='Enter a valid hex color code'
+            )
+        ],
         help_text="Hex color code for UI display (e.g., #FF5733)"
     )
     icon = models.CharField(
@@ -182,10 +187,16 @@ class Transaction(models.Model):
         """
         Custom save method to ensure category type matches transaction type
         """
+        # Handle transfer transactions - they cannot have categories
+        if self.type == 'transfer' and self.category is not None:
+            raise ValueError("Transfer transactions must not have a category")
+        
+        # Validate category type for income/expense transactions
         if self.category and self.type in ['income', 'expense']:
             if self.category.type != self.type:
                 raise ValueError(
                     f"Transaction type '{self.type}' doesn't match "
                     f"category type '{self.category.type}'"
                 )
+        
         super().save(*args, **kwargs)

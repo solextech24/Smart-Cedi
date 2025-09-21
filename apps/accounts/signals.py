@@ -4,17 +4,14 @@ from .models import User, UserProfile
 
 
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    """Create a UserProfile whenever a new User is created"""
-    if created:
+def handle_user_profile(sender, instance, created, **kwargs):
+    """
+    Handle UserProfile creation and updates for User instances
+    Consolidates profile management into a single receiver to prevent race conditions
+    """
+    if created or not hasattr(instance, 'profile'):
+        # Create profile for new users or if profile doesn't exist
         UserProfile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    """Save the UserProfile whenever the User is saved"""
-    if hasattr(instance, 'profile'):
-        instance.profile.save()
     else:
-        # Create profile if it doesn't exist
-        UserProfile.objects.create(user=instance)
+        # Save existing profile
+        instance.profile.save()

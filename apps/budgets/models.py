@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from decimal import Decimal
 from datetime import datetime
-from apps.transactions.models import Category
+from apps.transactions.models import Category, Transaction
 
 User = get_user_model()
 
@@ -92,6 +92,12 @@ class Budget(models.Model):
             models.Index(fields=['user', 'status']),
             models.Index(fields=['start_date', 'end_date']),
         ]
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(start_date__lt=models.F('end_date')),
+                name='budget_valid_date_range'
+            ),
+        ]
 
     def __str__(self):
         return f"{self.name} - GHS {self.amount} ({self.period})"
@@ -104,8 +110,6 @@ class Budget(models.Model):
     @property
     def spent_amount(self):
         """Calculate total spent in this budget's category during the budget period"""
-        from apps.transactions.models import Transaction
-        
         spent = Transaction.objects.filter(
             user=self.user,
             category=self.category,
@@ -160,14 +164,25 @@ class Budget(models.Model):
         if self.start_date >= self.end_date:
             raise ValueError("Start date must be before end date")
         
-        # Auto-update status based on current state
-        if self.is_active and self.is_current:
-            if self.is_over_budget:
-                self.status = 'exceeded'
-            else:
-                self.status = 'active'
-        elif timezone.now().date() > self.end_date:
-            self.status = 'completed'
+        # Get original status if this is an existing record
+        original_status = None
+        if self.pk:
+            try:
+                original_status = Budget.objects.get(pk=self.pk).status
+            except Budget.DoesNotExist:
+                pass
+        
+        # Auto-update status only for new objects or when user hasn't changed status
+        should_auto_update = (self.pk is None) or (original_status is not None and self.status == original_status)
+        
+        if should_auto_update:
+            if self.is_active and self.is_current:
+                if self.is_over_budget:
+                    self.status = 'exceeded'
+                else:
+                    self.status = 'active'
+            elif timezone.now().date() > self.end_date:
+                self.status = 'completed'
         
         super().save(*args, **kwargs)
 
