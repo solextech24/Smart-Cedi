@@ -8,10 +8,16 @@ def handle_user_profile(sender, instance, created, **kwargs):
     """
     Handle UserProfile creation and updates for User instances
     Consolidates profile management into a single receiver to prevent race conditions
+    Uses Django's recommended approach for checking related object existence
     """
-    if created or not hasattr(instance, 'profile'):
-        # Create profile for new users or if profile doesn't exist
+    if created:
+        # Create profile for new users
         UserProfile.objects.create(user=instance)
     else:
-        # Save existing profile
-        instance.profile.save()
+        # For existing users, safely check if profile exists
+        try:
+            # Try to access the profile
+            instance.profile.save()
+        except UserProfile.DoesNotExist:
+            # Profile doesn't exist, create it
+            UserProfile.objects.create(user=instance)
