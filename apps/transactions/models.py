@@ -1,9 +1,24 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 from decimal import Decimal
+import re
 
 User = get_user_model()
+
+
+def validate_hex_color(value):
+    """
+    Validator function to ensure color field contains a valid hex color code
+    Format: #RRGGBB where RR, GG, BB are hexadecimal digits
+    """
+    hex_color_pattern = r'^#[0-9A-Fa-f]{6}$'
+    if not re.match(hex_color_pattern, value):
+        raise ValidationError(
+            f'"{value}" is not a valid hex color code. '
+            'Use format #RRGGBB (e.g., #FF5733, #007BFF)'
+        )
 
 
 class Category(models.Model):
@@ -32,6 +47,7 @@ class Category(models.Model):
     color = models.CharField(
         max_length=7,
         default='#007bff',
+        validators=[validate_hex_color],
         help_text="Hex color code for UI display (e.g., #FF5733)"
     )
     icon = models.CharField(
